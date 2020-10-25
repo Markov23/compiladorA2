@@ -1,0 +1,18 @@
+﻿import java.util.Scanner;
+
+public class miClase
+{
+
+	public static void main(string[] args)
+	{
+
+		int i;
+		int i = 2;
+		i = 2;
+		int i = 2, j = 3;
+		int i, j = 2;
+		int i = 2, j;
+
+	}
+
+}
