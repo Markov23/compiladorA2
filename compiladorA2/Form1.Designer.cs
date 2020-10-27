@@ -37,21 +37,21 @@
             // 
             this.entrada.Location = new System.Drawing.Point(12, 12);
             this.entrada.Name = "entrada";
-            this.entrada.Size = new System.Drawing.Size(457, 426);
+            this.entrada.Size = new System.Drawing.Size(681, 426);
             this.entrada.TabIndex = 0;
             this.entrada.Text = "";
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(475, 161);
+            this.listBox1.Location = new System.Drawing.Point(699, 161);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(313, 277);
             this.listBox1.TabIndex = 1;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(602, 88);
+            this.button1.Location = new System.Drawing.Point(826, 88);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
@@ -63,7 +63,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1024, 450);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.entrada);
