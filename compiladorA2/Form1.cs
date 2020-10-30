@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using compiladorA2.Gramatica;
 using Irony.Parsing;
+using compiladorA2.Semantica;
 
 namespace compiladorA2
 {
@@ -38,12 +39,14 @@ namespace compiladorA2
             }
             else
             {
-                //MessageBox.Show("Analisis Exitoso");        
+                //MessageBox.Show("Analisis Exitoso");
+                analisisSemantico.evaluar(arbol);
+                /*
                 PrintParseTree(arbol.Root, lista);
                 for (int i = 0; i < lista.Count; i++)
                 {
                     Console.WriteLine(lista[i]);
-                }
+                }*/
                 MessageBox.Show("Exito");
             }
         }

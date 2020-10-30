@@ -352,7 +352,8 @@ namespace compiladorA2.Gramatica
                 controladorFlujo | controladorFlujo + cuerpoPrograma |
                 bloqueFor | bloqueFor + cuerpoPrograma |
                 bloqueWhile | bloqueWhile + cuerpoPrograma |
-                bloqueDoWhile | bloqueDoWhile + cuerpoPrograma;
+                bloqueDoWhile | bloqueDoWhile + cuerpoPrograma |
+                comentario | comentario + cuerpoPrograma;
 
             //------------------------------------------------------------------Manejo de variables--------------------------------------------------------------------------------------------
             tipoDato.Rule = int_ | string_ | float_ | char_ | double_ | boolean_;
