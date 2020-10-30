@@ -59,6 +59,7 @@
     <Compile Include="Gramatica\gramaticaJava.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Semantica\analisisSemantico.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -88,6 +89,7 @@
     <Folder Include="Tutoriales\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Ejemplos\ejemploVariables.txt" />
     <Content Include="Ejemplos\TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
