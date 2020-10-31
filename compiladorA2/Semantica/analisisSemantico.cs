@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using Irony.Parsing;
+
 
 namespace compiladorA2.Semantica
 {
@@ -181,10 +180,10 @@ namespace compiladorA2.Semantica
                         }
                     }
                 }
-                else if (arbol.Tokens[i].Terminal.Name.Equals("id") && !arbol.Tokens[i-1].Text.Equals("]") && !arbol.Tokens[i - 1].Text.Equals("class"))
+                else if (arbol.Tokens[i].Terminal.Name.Equals("id") && !arbol.Tokens[i - 1].Text.Equals("]") && !arbol.Tokens[i - 1].Text.Equals("class"))
                 {
                     linea = arbol.Tokens[i].Location.Line;
-                    fila = none + separador + arbol.Tokens[i].Text + separador + arbol.Tokens[i+2].Text + separador + linea;
+                    fila = none + separador + arbol.Tokens[i].Text + separador + arbol.Tokens[i + 2].Text + separador + linea;
                     variables.Add(fila);
 
 
@@ -220,7 +219,7 @@ namespace compiladorA2.Semantica
             int primerIncidencia = 0;
             int incidencias = 0;
 
-            for(int i = 0; i < declaracion.Length; i++)
+            for (int i = 0; i < declaracion.Length; i++)
             {
                 if (declaracion[i].Equals('"') && incidencias == 0)
                 {
@@ -247,7 +246,7 @@ namespace compiladorA2.Semantica
             {
                 if (declaracion[i].ToString().Contains("'"))
                 {
-                    valor = declaracion[i+1].ToString();
+                    valor = declaracion[i + 1].ToString();
                     valores.Add(valor);
                     i += 2;
                 }
