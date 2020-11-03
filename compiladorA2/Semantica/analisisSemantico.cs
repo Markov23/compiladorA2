@@ -17,8 +17,7 @@ namespace compiladorA2.Semantica
 
             string none = "!!00!!";
             string separador = "|";
-            string fila = "";
-            string[] arreglo;
+            string fila;
             int linea = 0;
 
             for (int i = 0; i < arbol.Tokens.Count; i++)
