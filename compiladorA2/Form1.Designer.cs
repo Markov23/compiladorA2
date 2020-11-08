@@ -495,6 +495,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ctr_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ctr_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ctr_MouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();

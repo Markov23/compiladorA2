@@ -184,7 +184,29 @@ namespace compiladorA2
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
+
+        bool down = false;
+        Point inicial;
+        private void Ctr_MouseMove(object sender, MouseEventArgs e)
+        {
+            Control ctr = (Control)sender;
+            if (down)
+            {
+                ctr.Left = e.X + ctr.Left - inicial.X;
+                ctr.Top = e.Y + ctr.Top - inicial.Y;
+            }
+        }
+        private void Ctr_MouseUp(object sender, MouseEventArgs e) => down = false;
+        private void Ctr_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                down = true;
+                inicial = e.Location;
+            }
+        }
+        //Con el metodo de arriba se mueve el formulario
+
     }
 }
