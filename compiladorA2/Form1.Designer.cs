@@ -81,7 +81,7 @@
             label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(64)))), ((int)(((byte)(88)))));
             label1.Location = new System.Drawing.Point(556, 1);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(213, 29);
+            label1.Size = new System.Drawing.Size(173, 29);
             label1.TabIndex = 12;
             label1.Text = "Primer Programa";
             label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -493,8 +493,10 @@
             this.Name = "Form1";
             this.RightToLeftLayout = true;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Ctr_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Ctr_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Ctr_MouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
