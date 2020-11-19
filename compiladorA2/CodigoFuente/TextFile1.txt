@@ -39,6 +39,11 @@ public class miClase
 		double[] arreglo = new double[nombre];
 		char[][] arreglo;
 
+		int arreglo[];
+		string arreglo[][] = new string[2][2];
+		double arreglo[] = new double[nombre];
+		char arreglo[][];
+
 		if(true)
 		{
 			int i;

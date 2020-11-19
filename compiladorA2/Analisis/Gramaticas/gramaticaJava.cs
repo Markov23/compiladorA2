@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Irony.Parsing;
 
-namespace compiladorA2.Gramatica
+namespace compiladorA2.Analisis.Gramaticas
 {
     class gramaticaJava : Grammar
     {
@@ -148,7 +148,7 @@ namespace compiladorA2.Gramatica
             public const string String = "string";
             public const string StringRegex = "\"[^\"]*\"";
             public const string Char = "string";
-            public const string CharRegex = "\'[^\']*\'";
+            public const string CharRegex = "\'[^\']\'";
         }
 
         public gramaticaJava() : base()
@@ -218,10 +218,10 @@ namespace compiladorA2.Gramatica
             var in_ = ToTerm(terminales.In);
             var import_ = ToTerm(terminales.Import);
 
-            MarkReservedWords(terminales.Void,terminales.Return,terminales.Null,terminales.True,terminales.False,
-                terminales.System,terminales.Out,terminales.Print,terminales.Println,terminales.Break,terminales.Main,
-                terminales.Static,terminales.Public,terminales.Private,terminales.Class,terminales.Scanner,
-                terminales.New,terminales.In,terminales.Import);
+            MarkReservedWords(terminales.Void, terminales.Return, terminales.Null, terminales.True, terminales.False,
+                terminales.System, terminales.Out, terminales.Print, terminales.Println, terminales.Break, terminales.Main,
+                terminales.Static, terminales.Public, terminales.Private, terminales.Class, terminales.Scanner,
+                terminales.New, terminales.In, terminales.Import);
             #endregion
 
             #region Control de flujo
@@ -234,8 +234,8 @@ namespace compiladorA2.Gramatica
             var switch_ = ToTerm(terminales.Switch);
             var case_ = ToTerm(terminales.Case);
 
-            MarkReservedWords(terminales.If,terminales.Else,terminales.Default,terminales.While,terminales.Do,
-                terminales.For,terminales.Switch,terminales.Case);
+            MarkReservedWords(terminales.If, terminales.Else, terminales.Default, terminales.While, terminales.Do,
+                terminales.For, terminales.Switch, terminales.Case);
             #endregion
 
             #region Tipos de dato
@@ -246,7 +246,7 @@ namespace compiladorA2.Gramatica
             var string_ = ToTerm(terminales.String);
             var char_ = ToTerm(terminales.Char);
 
-            MarkReservedWords(terminales.Int,terminales.Float,terminales.Double,terminales.Boolean,terminales.String,
+            MarkReservedWords(terminales.Int, terminales.Float, terminales.Double, terminales.Boolean, terminales.String,
                 terminales.Char);
             #endregion
 
@@ -263,8 +263,8 @@ namespace compiladorA2.Gramatica
             var llavesCerrar_ = ToTerm(terminales.LlavesCerrar);
             var igual_ = ToTerm(terminales.Igual);
 
-            MarkPunctuation(terminales.Punto,terminales.Coma,terminales.DosPuntos,terminales.PuntoComa,terminales.ParentesisAbrir,
-                terminales.ParentesisCerrar,terminales.CorcheteAbrir,terminales.CorcheteCerrar,terminales.LlavesAbrir,terminales.LlavesCerrar);
+            MarkPunctuation(terminales.Punto, terminales.Coma, terminales.DosPuntos, terminales.PuntoComa, terminales.ParentesisAbrir,
+                terminales.ParentesisCerrar, terminales.CorcheteAbrir, terminales.CorcheteCerrar, terminales.LlavesAbrir, terminales.LlavesCerrar);
             #endregion
 
             #region Operadores logicos
@@ -311,7 +311,7 @@ namespace compiladorA2.Gramatica
             var next_ = ToTerm(terminales.Next);
             var nextChar_ = ToTerm(terminales.NextChar);
 
-            MarkReservedWords(terminales.NextInt,terminales.NextFloat,terminales.NextDouble,terminales.NextBoolean,terminales.Next,
+            MarkReservedWords(terminales.NextInt, terminales.NextFloat, terminales.NextDouble, terminales.NextBoolean, terminales.Next,
                 terminales.NextChar);
             #endregion
 
@@ -333,7 +333,8 @@ namespace compiladorA2.Gramatica
             raiz.ErrorRule = SyntaxError + "}";
             raiz.ErrorRule = SyntaxError + ";";
 
-            importacionLibrerias.Rule = import_ + ubicacionLibrerias + puntoComa_;
+            importacionLibrerias.Rule = import_ + ubicacionLibrerias + puntoComa_ |
+                import_ + ubicacionLibrerias + puntoComa_ + importacionLibrerias;
 
             ubicacionLibrerias.Rule = nombre | nombre + punto_ + ubicacionLibrerias;
 
@@ -342,7 +343,9 @@ namespace compiladorA2.Gramatica
 
             //------------------------------------------------------------------Cuerpo del programa-------------------------------------------------------------------------------------------------
             metodoMain.Rule = public_ + static_ + void_ + main_ + parentesisAbrir_ + string_ + corcheteAbrir_ + corcheteCerrar_ + nombre + parentesisCerrar_ + llavesAbrir_ + llavesCerrar_ |
-                public_ + static_ + void_ + main_ + parentesisAbrir_ + string_ + corcheteAbrir_ + corcheteCerrar_ + nombre + parentesisCerrar_ + llavesAbrir_ + cuerpoPrograma + llavesCerrar_;
+                public_ + static_ + void_ + main_ + parentesisAbrir_ + string_ + nombre + corcheteAbrir_ + corcheteCerrar_ + parentesisCerrar_ + llavesAbrir_ + llavesCerrar_ |
+                public_ + static_ + void_ + main_ + parentesisAbrir_ + string_ + corcheteAbrir_ + corcheteCerrar_ + nombre + parentesisCerrar_ + llavesAbrir_ + cuerpoPrograma + llavesCerrar_ |
+                public_ + static_ + void_ + main_ + parentesisAbrir_ + string_ + nombre + corcheteAbrir_ + corcheteCerrar_ + parentesisCerrar_ + llavesAbrir_ + cuerpoPrograma + llavesCerrar_;
 
             cuerpoPrograma.Rule = declaracionVariable | declaracionVariable + cuerpoPrograma |
                 asignacionVariable | asignacionVariable + cuerpoPrograma |
@@ -359,15 +362,19 @@ namespace compiladorA2.Gramatica
             tipoDato.Rule = int_ | string_ | float_ | char_ | double_ | boolean_;
 
             declaracionVariable.Rule = tipoDato + listaVariables + puntoComa_ |
-                tipoDato + definicionArreglo  + puntoComa_;
+                tipoDato + definicionArreglo + puntoComa_;
 
             listaVariables.Rule = nombre | nombre + coma_ + listaVariables |
                 asignacionValor | asignacionValor + coma_ + listaVariables;
 
             definicionArreglo.Rule = corcheteAbrir_ + corcheteCerrar_ + nombre |
+                nombre + corcheteAbrir_ + corcheteCerrar_ |
                 corcheteAbrir_ + corcheteCerrar_ + nombre + igual_ + new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ |
+                nombre + corcheteAbrir_ + corcheteCerrar_ + igual_ + new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ |
                 corcheteAbrir_ + corcheteCerrar_ + corcheteAbrir_ + corcheteCerrar_ + nombre |
-                corcheteAbrir_ + corcheteCerrar_ + corcheteAbrir_ + corcheteCerrar_ + nombre + igual_ + new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_;
+                nombre + corcheteAbrir_ + corcheteCerrar_ + corcheteAbrir_ + corcheteCerrar_ |
+                corcheteAbrir_ + corcheteCerrar_ + corcheteAbrir_ + corcheteCerrar_ + nombre + igual_ + new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_ |
+                nombre + corcheteAbrir_ + corcheteCerrar_ + corcheteAbrir_ + corcheteCerrar_ + igual_ + new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_;
 
             asignacionVariable.Rule = asignacionValor + puntoComa_;
 
@@ -385,12 +392,14 @@ namespace compiladorA2.Gramatica
             expresion.Rule = numero | numero + operadorAritmetico + expresion |
                 stringRegex | stringRegex + operadorAritmetico + expresion |
                 nombre | nombre + operadorAritmetico + expresion |
-                parentesisAbrir_ + expresion + parentesisCerrar_ | 
+                parentesisAbrir_ + expresion + parentesisCerrar_ |
                 parentesisAbrir_ + expresion + parentesisCerrar_ + operadorAritmetico + expresion |
                 nombre + corcheteAbrir_ + expresion + corcheteCerrar_ |
                 nombre + corcheteAbrir_ + expresion + corcheteCerrar_ + expresion |
                 nombre + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_ |
-                nombre + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_ + expresion;
+                nombre + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_ + expresion |
+                new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ |
+                new_ + tipoDato + corcheteAbrir_ + expresion + corcheteCerrar_ + corcheteAbrir_ + expresion + corcheteCerrar_;
 
             operadorAritmetico.Rule = mas_ | menos_ | por_ | entre_ | modulo_;
 
@@ -413,10 +422,10 @@ namespace compiladorA2.Gramatica
 
             reglaIf.Rule = if_ + parentesisAbrir_ + operacionLogica + parentesisCerrar_;
 
-            operacionLogica.Rule = valorLogico| valorLogico + operadorLogico + operacionLogica |
+            operacionLogica.Rule = valorLogico | valorLogico + operadorLogico + operacionLogica |
                 relacion | relacion + operadorLogico + operacionLogica |
                 parentesisAbrir_ + valorLogico + operadorLogico + operacionLogica + parentesisCerrar_ |
-                parentesisAbrir_ + valorLogico + operadorLogico + operacionLogica + parentesisCerrar_ + operadorLogico + operacionLogica|
+                parentesisAbrir_ + valorLogico + operadorLogico + operacionLogica + parentesisCerrar_ + operadorLogico + operacionLogica |
                 parentesisAbrir_ + relacion + operadorLogico + operacionLogica + parentesisCerrar_ |
                 parentesisAbrir_ + relacion + operadorLogico + operacionLogica + parentesisCerrar_ + operadorLogico + operacionLogica |
                 not_ + operacionLogica;
@@ -462,7 +471,7 @@ namespace compiladorA2.Gramatica
                 for_ + parentesisAbrir_ + declaracionVariable + relacion + puntoComa_ + operadorSimple + parentesisCerrar_ + llavesAbrir_ + llavesCerrar_ |
                 for_ + parentesisAbrir_ + declaracionVariable + relacion + puntoComa_ + operadorSimple + parentesisCerrar_ + llavesAbrir_ + cuerpoPrograma + llavesCerrar_ |
                 for_ + parentesisAbrir_ + asignacionValor + puntoComa_ + relacion + puntoComa_ + operadorSimple + parentesisCerrar_ + llavesAbrir_ + llavesCerrar_ |
-                for_ + parentesisAbrir_ + asignacionValor + puntoComa_ + relacion + puntoComa_ + operadorSimple + parentesisCerrar_ + llavesAbrir_ + cuerpoPrograma + llavesCerrar_ ;
+                for_ + parentesisAbrir_ + asignacionValor + puntoComa_ + relacion + puntoComa_ + operadorSimple + parentesisCerrar_ + llavesAbrir_ + cuerpoPrograma + llavesCerrar_;
 
             bloqueWhile.Rule = while_ + parentesisAbrir_ + operacionLogica + parentesisCerrar_ + llavesAbrir_ + llavesCerrar_ |
                 while_ + parentesisAbrir_ + operacionLogica + parentesisCerrar_ + llavesAbrir_ + cuerpoPrograma + llavesCerrar_;
