@@ -19,7 +19,6 @@ namespace compiladorA2.Analisis.Semantica
             {
                 if(tokens[i].getNombre().Equals("int") || tokens[i].getNombre().Equals("float") || tokens[i].getNombre().Equals("double") || tokens[i].getNombre().Equals("string") || tokens[i].getNombre().Equals("char") || tokens[i].getNombre().Equals("boolean"))
                 {
-                    Console.WriteLine("Detecte declaracion: "+tokens[i].getLinea());
                     for(int j = i + 1; j < tokens.Count; j++)
                     {
                         if(tokens[j].getNombre().Equals(";"))
@@ -37,10 +36,74 @@ namespace compiladorA2.Analisis.Semantica
                         }
                     }
                 }
+                else if(tokens[i].getNombre().Equals("if") || tokens[i].getNombre().Equals("switch") || tokens[i].getNombre().Equals("while"))
+                {
+                    for(int j = i+1; j < tokens.Count; j++)
+                    {
+                        if(tokens[j].getNombre().Equals(")"))
+                        {
+                            i = j;
+                            j = tokens.Count;
+                        }
+                    }
+                }
+                else if(tokens[i].getNombre().Equals("for"))
+                {
+                    i = i + 2;
+
+                    if(tokens[i].getTipo().Equals("id"))
+                    {
+                        for (int j = i; j < tokens.Count; j++)
+                        {
+                            if (tokens[j].getNombre().Equals(";"))
+                            {
+                                variables.Add(evaluarAsignacion(obtenerTokensLinea(tokens, i, j)));
+
+                                i = j + 1;
+                                j = tokens.Count;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int j = i; j < tokens.Count; j++)
+                        {
+                            if (tokens[j].getNombre().Equals(";"))
+                            {
+                                auxiliarVariables.Clear();
+                                auxiliarVariables = evaluarDeclaracion(obtenerTokensLinea(tokens, i, j));
+
+                                for (int k = 0; k < auxiliarVariables.Count; k++)
+                                {
+                                    variables.Add(auxiliarVariables[k]);
+                                }
+
+                                i = j + 1;
+                                j = tokens.Count;
+                            }
+                        }
+                    }
+                    for (int j = i; j < tokens.Count; j++)
+                    {    
+                        if (tokens[j].getNombre().Equals(";"))
+                        {
+                            i = j + 1;
+                            j = tokens.Count;
+                        }
+                    }
+                    for(int j = i; j < tokens.Count; j++)
+                    {
+                        if (tokens[j].getNombre().Equals(";"))
+                        {
+                            variables.Add(evaluarAsignacion(obtenerTokensLinea(tokens, i, j)));
+
+                            i = j;
+                            j = tokens.Count;
+                        }
+                    }
+                }
                 else if(tokens[i].getTipo().Equals("id"))
                 {
-                    Console.WriteLine("Detecte asignacion: " + tokens[i].getLinea());
-
                     for(int j = i + 1; j < tokens.Count; j++)
                     {
                         if (tokens[j].getNombre().Equals(";"))
@@ -275,6 +338,9 @@ namespace compiladorA2.Analisis.Semantica
             string auxiliarValor = "";
             string auxiliarNombre = "";
             int posicionAsignacion = 0;
+            bool asignacionEspecial = false;
+            bool operacionSimple = false;
+            string fragmentoOperacion = "";
 
             for (int i = 0; i < tokens.Count; i++)
             {
@@ -282,20 +348,64 @@ namespace compiladorA2.Analisis.Semantica
                 if (tokens[i].getNombre().Equals("="))
                 {
                     posicionAsignacion = i;
+                }
+
+                if(tokens[i].getNombre().Equals("+=") || tokens[i].getNombre().Equals("-=") || tokens[i].getNombre().Equals("*=") || tokens[i].getNombre().Equals("/=") || tokens[i].getNombre().Equals("%="))
+                {
+                    posicionAsignacion = i;
+                    asignacionEspecial = true;
+                    fragmentoOperacion = tokens[i].getNombre().Substring(0,1);
+                }
+
+                if(tokens[i].getNombre().Equals("++") || tokens[i].getNombre().Equals("--"))
+                {
+                    posicionAsignacion = i;
+                    operacionSimple = true;
+                    fragmentoOperacion = tokens[i].getNombre().Substring(0, 1);
+                }
+
+                if(posicionAsignacion != 0)
+                {
                     i = tokens.Count;
                 }
 
             }
 
-            for (int i = 0; i < posicionAsignacion; i++)
+            if(asignacionEspecial == true)
             {
-                auxiliarNombre = auxiliarNombre + " " + tokens[i].getNombre();
-            }
+                for (int i = 0; i < posicionAsignacion; i++)
+                {
+                    auxiliarNombre = auxiliarNombre + " " + tokens[i].getNombre();
+                }
 
-            for (int i = posicionAsignacion + 1; i < tokens.Count-1; i++)
-            {
-                auxiliarValor = auxiliarValor + " " + tokens[i].getNombre();
+                auxiliarValor = auxiliarNombre + " " + fragmentoOperacion;
+
+                for (int i = posicionAsignacion + 1; i < tokens.Count - 1; i++)
+                {
+                    auxiliarValor = auxiliarValor + " " + tokens[i].getNombre();
+                }
             }
+            else if(operacionSimple == true)
+            {
+                for (int i = 0; i < posicionAsignacion; i++)
+                {
+                    auxiliarNombre = auxiliarNombre + " " + tokens[i].getNombre();
+                }
+
+                auxiliarValor = auxiliarNombre + " " + fragmentoOperacion + " 1";
+            }
+            else
+            {
+                for (int i = 0; i < posicionAsignacion; i++)
+                {
+                    auxiliarNombre = auxiliarNombre + " " + tokens[i].getNombre();
+                }
+
+                for (int i = posicionAsignacion + 1; i < tokens.Count - 1; i++)
+                {
+                    auxiliarValor = auxiliarValor + " " + tokens[i].getNombre();
+                }
+            }        
 
             variable = new elementoVariable("", auxiliarNombre, auxiliarValor, tokens[0].getLinea());
 
