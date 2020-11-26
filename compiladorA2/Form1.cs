@@ -21,6 +21,7 @@ namespace compiladorA2
         {
             List<elementoToken> lista = new List<elementoToken>();
             List<elementoVariable> variables = new List<elementoVariable>();
+            List<string> listaErrores = new List<string>();
             string codigo = entrada.Text;
             var gramatica = new gramaticaJava();
 
@@ -52,11 +53,13 @@ namespace compiladorA2
                 variables = deteccionVariables.detectarVariables(lista);
 
                 for (int i = 0; i < variables.Count; i++)
-                {
+                {                    
                     Console.WriteLine((i + 1) + "- Tipo: " + variables[i].getTipo() + " Nombre: " + variables[i].getNombre() + " Valor: " + variables[i].getValor() + " Linea: " + variables[i].getLinea());
                 }
+                listaErrores = detectarValores.deteccion(variables);
 
                 areaResultado.AppendText("Analis correcto" + "\n");
+                //areaResultado.AppendText(detectarValores.deteccion(variables)+"\n");
             }
         }
 
