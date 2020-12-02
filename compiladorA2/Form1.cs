@@ -22,6 +22,8 @@ namespace compiladorA2
             List<elementoToken> lista = new List<elementoToken>();
             List<elementoVariable> variables = new List<elementoVariable>();
             List<string> listaErrores = new List<string>();
+            List<string> auxiliarErrores = new List<string>();
+
             string codigo = entrada.Text;
             var gramatica = new gramaticaJava();
 
@@ -52,14 +54,47 @@ namespace compiladorA2
 
                 variables = deteccionVariables.detectarVariables(lista);
 
-                for (int i = 0; i < variables.Count; i++)
-                {                    
-                    Console.WriteLine((i + 1) + "- Tipo: " + variables[i].getTipo() + " Nombre: " + variables[i].getNombre() + " Valor: " + variables[i].getValor() + " Linea: " + variables[i].getLinea());
+                
+                for(int i = 0; i < variables.Count; i++)
+                {
+                    //Console.WriteLine((i + 1) + "- Tipo: " + variables[i].getTipo() + " Nombre: " + variables[i].getNombre() + " Valor: " + variables[i].getValor() + " Linea: " + variables[i].getLinea());
                 }
-                listaErrores = detectarValores.deteccion(variables);
+                
+
+                auxiliarErrores = verificarDeclaracionVariables.verificarDeclaracion(variables);
+
+                for(int i = 0; i < auxiliarErrores.Count; i++)
+                {
+                    listaErrores.Add(auxiliarErrores[i]);
+                }
+
+                auxiliarErrores.Clear();
+
+                auxiliarErrores = verificarDeclaracionArreglos.verificarDeclaracion(variables);
+
+                for (int i = 0; i < auxiliarErrores.Count; i++)
+                {
+                    listaErrores.Add(auxiliarErrores[i]);
+                }
+
+                auxiliarErrores.Clear();
+
+                
+                auxiliarErrores = detectarValores.deteccion(variables);
+
+                for (int i = 0; i < auxiliarErrores.Count; i++)
+                {
+                    listaErrores.Add(auxiliarErrores[i]);
+                }
+
+                auxiliarErrores.Clear();
 
                 areaResultado.AppendText("Analis correcto" + "\n");
-                //areaResultado.AppendText(detectarValores.deteccion(variables)+"\n");
+
+                for (int i = 0; i < listaErrores.Count; i++)
+                {
+                    areaResultado.AppendText(listaErrores[i] + "\n");
+                }
             }
         }
 

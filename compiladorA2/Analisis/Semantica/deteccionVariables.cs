@@ -286,11 +286,11 @@ namespace compiladorA2.Analisis.Semantica
                     {
                         auxiliarValor = auxiliarValor + " " + tokens[i].getNombre();
                     }
-                    variable = new elementoVariable(tipoEsperado+"[][]",ids[0],auxiliarValor,tokens[0].getLinea());
+                    variable = new elementoVariable(tipoEsperado+"[][]",ids[0].Replace(" ", ""), auxiliarValor,tokens[0].getLinea());
                 }
                 else 
                 {
-                    variable = new elementoVariable(tipoEsperado + "[][]", ids[0], "", tokens[0].getLinea());
+                    variable = new elementoVariable(tipoEsperado + "[][]", ids[0].Replace(" ", ""), "", tokens[0].getLinea());
                 }
             }
             else if (contadorCorchetes == 1)
@@ -303,11 +303,11 @@ namespace compiladorA2.Analisis.Semantica
                     {
                         auxiliarValor = auxiliarValor + " " + tokens[i].getNombre();
                     }
-                    variable = new elementoVariable(tipoEsperado + "[]", ids[0], auxiliarValor, tokens[0].getLinea());
+                    variable = new elementoVariable(tipoEsperado + "[]", ids[0].Replace(" ", ""), auxiliarValor, tokens[0].getLinea());
                 }
                 else
                 {
-                    variable = new elementoVariable(tipoEsperado + "[]", ids[0], "", tokens[0].getLinea());
+                    variable = new elementoVariable(tipoEsperado + "[]", ids[0].Replace(" ", ""), "", tokens[0].getLinea());
                 }
             }
             else
@@ -320,11 +320,11 @@ namespace compiladorA2.Analisis.Semantica
                     {
                         auxiliarValor = auxiliarValor + " " + tokens[i].getNombre();
                     }
-                    variable = new elementoVariable(tipoEsperado, ids[0], auxiliarValor, tokens[0].getLinea());
+                    variable = new elementoVariable(tipoEsperado, ids[0].Replace(" ", ""), auxiliarValor, tokens[0].getLinea());
                 }
                 else
                 {
-                    variable = new elementoVariable(tipoEsperado, ids[0], "", tokens[0].getLinea());
+                    variable = new elementoVariable(tipoEsperado, ids[0].Replace(" ", ""), "", tokens[0].getLinea());
                 }
             }
 
@@ -407,7 +407,7 @@ namespace compiladorA2.Analisis.Semantica
                 }
             }        
 
-            variable = new elementoVariable("", auxiliarNombre, auxiliarValor, tokens[0].getLinea());
+            variable = new elementoVariable("", auxiliarNombre.Replace(" ",""), auxiliarValor, tokens[0].getLinea());
 
             return variable;
         }
