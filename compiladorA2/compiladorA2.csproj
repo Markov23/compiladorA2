@@ -154,6 +154,8 @@
     <Compile Include="Analisis\Semantica\detectarValores.cs" />
     <Compile Include="Analisis\Semantica\elementoToken.cs" />
     <Compile Include="Analisis\Semantica\elementoVariable.cs" />
+    <Compile Include="Analisis\Semantica\verificarDeclaracionArreglos.cs" />
+    <Compile Include="Analisis\Semantica\verificarDeclaracionVariables.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,6 +195,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CodigoFuente\pruebasVariables.txt" />
+    <Content Include="CodigoFuente\testeoDeDeclaracionesArreglos.txt" />
+    <Content Include="CodigoFuente\testeoDeDeclaracionesVariables.txt" />
     <Content Include="CodigoFuente\TextFile1.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
