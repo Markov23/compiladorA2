@@ -121,21 +121,7 @@ namespace compiladorA2
         {
             this.WindowState = FormWindowState.Minimized;
         }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            panelMenu.Visible = true;
-            if (menuTuto.Visible == true)
-            {
-                menuTuto.Visible = false;
-            }
-        }
-
-        private void button6_Click_1(object sender, EventArgs e)
-        {
-            panelMenu.Visible = false;
-        }
-
+                   
         private void button7_Click(object sender, EventArgs e)
         {
             OpenFileDialog open = new OpenFileDialog();
@@ -156,14 +142,10 @@ namespace compiladorA2
                 {
                     MessageBox.Show("" + ex.Message);
                 }
-            }
-            panelMenu.Visible = false;
+            }            
         }
 
-        private void button9_Click(object sender, EventArgs e)
-        {
-            panelMenu.Visible = false;
-        }
+       
 
         private void button10_Click(object sender, EventArgs e)
         {
@@ -172,36 +154,7 @@ namespace compiladorA2
             {
                 entrada.Text = guardar.FileName;
             }
-            panelMenu.Visible = false;
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            menuTuto.Visible = true;
-            if (panelMenu.Visible == true)
-            {
-                panelMenu.Visible = false;
-            }
-        }
-
-        private void button11_Click(object sender, EventArgs e)
-        {
-            menuTuto.Visible = false;
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            menuTuto.Visible = false;
-        }
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-            menuTuto.Visible = false;
-        }
-
-        private void button14_Click(object sender, EventArgs e)
-        {
-            menuTuto.Visible = false;
+            //panelMenu.Visible = false;
         }
 
         private void bindingSource1_CurrentChanged(object sender, EventArgs e)
@@ -231,6 +184,56 @@ namespace compiladorA2
             {
                 down = true;
                 inicial = e.Location;
+            }
+        }
+        private void tableLayoutPanel5_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel4_Layout(object sender, LayoutEventArgs e)
+        {
+
+        }
+
+        private void file_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = file.SelectedIndex;
+
+            switch (index)
+            {
+                case 0:
+                    OpenFileDialog open = new OpenFileDialog();
+                    if (open.ShowDialog() == DialogResult.OK)
+                    {
+                        try
+                        {
+                            StreamReader leer = new StreamReader(open.FileName);
+                            string linea;
+                            linea = leer.ReadLine();
+                            while (linea != null)
+                            {
+                                entrada.AppendText(linea + '\n');
+                                linea = leer.ReadLine();
+                            }
+                        }
+                        catch (SecurityException ex)
+                        {
+                            MessageBox.Show("" + ex.Message);
+                        }
+                    }
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    SaveFileDialog guardar = new SaveFileDialog();
+                    if (guardar.ShowDialog() == DialogResult.OK)
+                    {
+                        entrada.Text = guardar.FileName;
+                    }
+                    break;
+                case 3:
+                    break;
             }
         }
         //Con el metodo de arriba se mueve el formulario
